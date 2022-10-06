@@ -29,7 +29,7 @@ function getPage($id){
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => 'GET',
     CURLOPT_HTTPHEADER => [
-        'Authorization: Basic dGVtcGFkbWluOmJpbGwwMDVUaGpA'
+        'Authorization: Basic ' //Token Goes Here
     ],
     ]);
 
@@ -69,7 +69,7 @@ function createPage($domain, $title, $content){
     CURLOPT_SSL_VERIFYHOST => false,
     CURLOPT_SSL_VERIFYPEER => false,
     CURLOPT_HTTPHEADER => [
-        'Authorization: Basic dGVtcGFkbWluOmJpbGwwMDVUaGpA',
+        'Authorization: Basic ', //Token Goes Here
         'Content-Type: application/x-www-form-urlencoded'
     ],
     ]);
