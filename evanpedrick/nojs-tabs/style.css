@@ -1,0 +1,63 @@
+.tab-container {
+  --tab-background: #fff;
+  --tab-accent: #00aeef;
+  --tab-fontSize: 17px;
+  --tab-margin: 80px auto 0;
+  --tab-minHeight: 510px;
+  --nav-padding: 14px 25px;
+  --content-padding: 25px;
+  display: flex;
+  justify-content: flex-start;
+  width: 90%;
+  list-style: none;
+  position: relative;
+  text-align: left;
+  min-height: var(--tab-minHeight);
+  margin: var(--tab-margin);
+}
+.tab-container .tab-item {
+  display: inline-block;
+}
+.tab-container input[type="radio"] {
+  position: absolute;
+  top: 0;
+  left: -9999px;
+}
+.tab-container .tab-nav {
+  display: block;
+  padding: var(--nav-padding);
+  font-size: var(--tab-fontSize);
+  font-weight: normal;
+  text-transform: uppercase;
+  background: var(--tab-background);
+  border: 1px solid var(--tab-accent);
+  border-bottom: none;
+  top: 5px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  z-index: 3;
+}
+.tab-container label:hover {
+  background: var(--tab-accent);
+}
+.tab-container .tab-content {
+  z-index: 2;
+  display: none;
+  overflow: hidden;
+  width: 100%;
+  font-size: var(--tab-fontSize);
+  line-height: var(--content-padding);
+  padding: var(--content-padding);
+  position: absolute;
+  top: 53px;
+  left: 0;
+  background: var(--tab-background);
+  border: 1px solid var(--tab-accent);
+}
+.tab-container [id^="tab"]:checked + label {
+  background: var(--tab-accent);
+}
+.tab-container [id^="tab"]:checked ~ [id^="tab-content"] {
+  display: block;
+}

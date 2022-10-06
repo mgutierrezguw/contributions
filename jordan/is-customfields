@@ -1,0 +1,107 @@
+<?php
+if (!class_exists("ISCustomFieldHelper")) {
+    class ISCustomFieldHelper
+    {
+        protected static $instance = null;
+        public $model = null;
+        public $fields_by_name = null;
+
+        public static function instance()
+        {
+            if (is_null(self::$instance)) {
+                self::$instance = new self();
+            }
+            return self::$instance;
+        }
+
+        public function __construct()
+        {
+        }
+
+        public function getModel()
+        {
+            if ($this->model == null) {
+                //this assumes a global function that sends api requests
+                $this->model = make_api_call("contacts/model");
+            }
+            return $this->model;
+        }
+
+
+        public function getFieldId($name)
+        {
+            $model = $this->getModel();
+            $fields = array_filter($model->custom_fields, function ($field) use (&$name) {
+                return $field->field_name == $name;
+            });
+
+            if (!empty($fields)) {
+                $first_field = array_pop(array_reverse($fields));
+                return $first_field->id;
+            }
+
+            return null;
+        }
+
+        public function getFieldName($id)
+        {
+            $model = $this->getModel();
+            $fields = array_filter($model->custom_fields, function ($field) use (&$id) {
+                return $field->id == $id;
+            });
+
+            if (!empty($fields)) {
+                $first_field = array_pop(array_reverse($fields));
+                return $first_field->field_name;
+            }
+
+            return null;
+        }
+
+        public function parseCustomFields($customFields)
+        {
+            $returnFields = [];
+            foreach ($customFields as $custom_field) {
+                $returnFields[$this->getFieldName($custom_field->id)] = $custom_field->content;
+            }
+
+            return $returnFields;
+        }
+
+        public function buildCustomFields($customFields)
+        {
+            $returnFields = [];
+            foreach ($customFields as $fieldName => $fieldValue) {
+                $returnFields[] = [
+                    "content" => $fieldValue,
+                    "id" => $this->getFieldId($fieldName)
+                ];
+            }
+            return $returnFields;
+        }
+    }
+
+    function ISCustomFieldHelper()
+    {
+        return ISCustomFieldHelper::instance();
+    }
+}
+
+
+/* usage 
+* Does NOT use underscores
+* getting custom fields
+* $isFields = ISCustomFieldHelper();
+* $res = make_api_call($end_point, $params);
+* $all_custom_fields = $res->custom_fields;
+* $custom_fields = $isFields->parseCustomFields($all_custom_fields);
+* returns an array with the field names as key
+
+* setting custom fields
+* $isFields = ISCustomFieldHelper();
+* $customFields = $isFields->buildCustomFields([
+    "Field1Name" => $data1,
+    "Field2Name" => $data2,
+* ]);
+* $POST_DATA = ["custom_fields" => $customFields];
+* send POST_DATA in api call
