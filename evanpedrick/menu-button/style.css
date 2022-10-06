@@ -1,0 +1,77 @@
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
+}
+
+.dot_menu {
+  display: inline-block;
+  filter: drop-shadow(0 19px 38px rgba(0, 0, 0, 0.3))
+    drop-shadow(0 15px 12px rgba(0, 0, 0, 0.22));
+}
+
+.dot_menu input {
+  display: none;
+}
+
+.dot_menu label {
+  display: block;
+  cursor: pointer;
+  width: 50vw;
+  height: 50vw;
+  max-width: 125px;
+  max-height: 125px;
+}
+
+.dot_menu path {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  --length: 0;
+  --offset: -50;
+  stroke-dasharray: var(--length) var(--total-length);
+  stroke-dashoffset: var(--offset);
+  transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.dot_menu circle {
+  fill: red;
+  opacity: 1;
+}
+
+.dot_menu input:checked + svg .line--1,
+.dot_menu input:checked + svg .line--3 {
+  --length: 22.627416998;
+}
+
+.dot_menu input:checked + svg .line--2 {
+  --length: 0;
+}
+
+.dot_menu .line--1,
+.dot_menu .line--3 {
+  --total-length: 111.22813415527344;
+  --offset: -62.22813415527344;
+}
+
+.dot_menu .line--2 {
+  --total-length: 99;
+}
+
+.dot_menu input:checked + svg path {
+  transform: translateX(30px);
+}
+
+.dot_menu input:checked + svg .line--1,
+.dot_menu input:checked + svg .line--3 {
+  --offset: -16.9705627485;
+}
+
+.dot_menu input:checked + svg .line--2 {
+  --offset: -20;
+}
