@@ -1,0 +1,76 @@
+.star-grid {
+  --star-size: 3rem;
+  --star-gap: 0.25rem;
+  --color-inactive: #ccd0d4;
+  --color-active: #cfc304;
+  --hover-scale: 1.25;
+  --animate-scale: 1.3;
+  display: inline-flex;
+  gap: var(--star-gap);
+}
+
+.star svg {
+  height: var(--star-size);
+  width: var(--star-size);
+  fill: var(--color-inactive);
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.star-grid.editable {
+  flex-direction: row-reverse;
+}
+
+.star-grid.editable input {
+  display: none;
+}
+
+.star:hover {
+  scale: var(--hover-scale);
+}
+
+.star:hover svg,
+.star:hover ~ .star svg,
+.star-grid.editable input:checked ~ .star svg {
+  fill: var(--color-active);
+  opacity: 1;
+  filter: brightness(1);
+}
+
+.star:hover svg,
+.star:hover ~ .star svg {
+  opacity: 1 !important;
+  filter: brightness(0.9) !important;
+}
+
+.star-grid.editable:hover input:checked ~ .star svg {
+  opacity: 0.4;
+}
+
+.star-grid.editable input:checked + .star svg {
+  -webkit-animation: pulsate-fwd 0.25s ease-in-out 1ms both;
+  animation: pulsate-fwd 0.25s ease-in-out 1ms both;
+}
+
+@-webkit-keyframes pulsate-fwd {
+  0% {
+    transform: scale(var(--hover-scale));
+  }
+  50% {
+    transform: scale(var(--animate-scale));
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes pulsate-fwd {
+  0% {
+    transform: scale(var(--hover-scale));
+  }
+  50% {
+    transform: scale(var(--animate-scale));
+  }
+  100% {
+    transform: scale(1);
+  }
+}
