@@ -1,0 +1,176 @@
+{
+    // Place your snippets for html here. Each snippet is defined under a snippet name and has a prefix, body and 
+    // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+    // same ids are connected.
+    // Example:
+    // "Print to console": {
+    // 	"prefix": "log",
+    // 	"body": [
+    // 		"console.log('$1');",
+    // 		"$2"
+    // 	],
+    // 	"description": "Log output to console"
+    // }
+    "UTM": {
+        "prefix": "utm",
+        "body": [
+            "<script>",
+            "",
+            "url_string = window.location.href;",
+            "url = new URL(url_string);",
+            "",
+            "content = url.searchParams.get('utm_content');",
+            "document.getElementById('inf_custom_UTMContent').value = content;",
+            "",
+            "// console.log('Logging: ');",
+            "// console.log(content);",
+            "",
+            "</script>"
+        ],
+        "description": "utm"
+    },
+    "form": {
+        "prefix": "form_validate",
+        "body": [
+            "<div class=\"infusion-submit\">",
+            "\t<button style=\"display:none;\" class=\"infusion-recaptcha\" id=\"recaptcha_893ed165dc36148ac57b5ebd4e2ff8cb\" type=\"submit\">Submit</button>",
+            "</div>",
+            "",
+            "<button type=\"button\" class=\"infusion-submit button success\" id=\"report\">Submit</button>",
+            "",
+            "<script>",
+            "",
+            "\tvar form = document.querySelector(\"#inf_form_893ed165dc36148ac57b5ebd4e2ff8cb\");",
+            "\tvar reportButton = document.querySelector(\"#report\");",
+            "",
+            "\treportButton.addEventListener(\"click\", function() {",
+            "\t\tvar reportVal = form.reportValidity();",
+            "\t\tif(reportVal){",
+            "\t\t\tdocument.getElementById(\"recaptcha_893ed165dc36148ac57b5ebd4e2ff8cb\").click();",
+            "\t\t}",
+            "\t});",
+            "",
+            "</script>"
+        ],
+        "description": "form"
+    },
+    "animation": {
+        "prefix": "animation",
+        "body": [
+            "<div class=\"spacer\"></div>",
+            "<div id=\"square_wrap\">",
+            "\t<div class=\"square\">This is a square</div>",
+            "</div>",
+            "<style>",
+            ".spacer{",
+            "\theight:2000px;",
+            "}",
+            ".square{",
+            "\topacity: 0;",
+            "\ttransform: scale(1.2);",
+            "\tbackground:blue;",
+            "\theight:300px;",
+            "\twidth:300px;",
+            "}",
+            "@media (prefers-reduced-motion: no-preference) {",
+            "\t.square {",
+            "\ttransition: opacity 1s ease, transform 1s ease;",
+            "\t}",
+            "}",
+            ".square_transition {",
+            "\topacity: 1;",
+            "\ttransform: none;",
+            "}",
+            "</style>",
+            "<script>",
+            "const items = document.getElementsByClassName(\"square_transition\");",
+            "Array.from(items).forEach(element => {",
+            "\telement.classList.remove(\"square_transition\");",
+            "});",
+            "const observer = new IntersectionObserver(entries => {",
+            "\tentries.forEach(entry => {",
+            "\tif (entry.isIntersecting) {",
+            "\t\tentries[0].target.querySelector('div').classList.add('square_transition');",
+            "\t\treturn;",
+            "\t}",
+            "\t//entries[0].target.querySelector('.container').classList.remove('container_transition');",
+            "\t});",
+            "});",
+            "observer.observe(document.querySelector('#square_wrap'));",
+            "var delayInMilliseconds = 500; //.5 second",
+            "setTimeout(function() {",
+            "\tvar element = document.getElementById(\"square_wrap\");",
+            "\t// element.querySelector('div').classList.add('square_transition');",
+            "}, delayInMilliseconds);",
+            "</script>",
+        ],
+        "description": "animation"
+    },
+    "console": {
+        "prefix": "joncs",
+        "body": [
+            "console.log(\"$0\");"
+        ],
+        "description": "php"
+    },
+    "php": {
+        "prefix": "php",
+        "body": [
+            "<?php",
+            "$1",
+            "?>",
+        ],
+        "description": "php"
+    },
+    "utm_pass": {
+        "prefix": "utm_pass",
+        "body": [
+            "<script>",
+            "\tjQuery( document ).ready(function() {",
+            "",
+            "\t\tparams = window.location.search;",
+            "",
+            "\t\tjQuery('a').each(function(index) {",
+            "",
+            "\t\t\tbaseurl = jQuery(this).attr(\"href\");",
+            "\t\t\tnewurl = baseurl+params;",
+            "\t\t\tjQuery(this).attr(\"href\",newurl);",
+            "",
+            "\t\t});",
+            "\t});",
+            "</script>"
+        ],
+        "description": "utm_pass"
+    },
+    "ip_address": {
+        "prefix": "ip_address",
+        "body": [
+            "<script>",
+            "\tfetch('https://jsonip.com', { mode: 'cors' })",
+            "\t.then((resp) => resp.json())",
+            "\t.then((ip) => {",
+            "\t\t// console.log(\"1.\"+ip);",
+            "\t\tvar ipaddress = ip;",
+            "\t\tvar delayInMilliseconds = 5000; //1 second",
+            "\t\t// console.log(\"2. \"+ipaddress.ip);",
+            "\t\tsetTimeout(function() {",
+            "\t\t\t// console.log(\"timeout function running\");",
+            "\t\t\tlet form = document.getElementById(\"Form\");",
+            "\t\t\tform.focus();",
+            "\t\t\tvar delayInMillisecondsTwo = 3000; //1 second",
+            "\t\t\tsetTimeout(function() {",
+            "\t\t\t\t// console.log(\"2nd timeout\");",
+            "\t\t\t\tvar ipfield = document.querySelector('.hs_ip_address input');",
+            "\t\t\t\t// console.log(ipfield);",
+            "\t\t\t\tipfield.value = ipaddress.ip;",
+            "\t\t\t\tipfield.focus();",
+            "\t\t\t\t// console.log(\"3. \"+ipaddress.ip);",
+            "\t\t\t}, delayInMillisecondsTwo);",
+            "\t\t}, delayInMilliseconds);",
+            "\t});",
+            "</script>"
+        ],
+        "description": "ip_address"
+    }
+}
