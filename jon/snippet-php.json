@@ -1,0 +1,230 @@
+{
+    // Place your snippets for php here. Each snippet is defined under a snippet name and has a prefix, body and 
+    // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+    // same ids are connected.
+    // "Example:"
+    "Print to console": {
+        "prefix": "log",
+        "body": [
+            "console.log('$1');",
+            "$2"
+        ],
+        "description": "Log output to console"
+    },
+    "Print_r Block": {
+        "prefix": [
+            "<pr"
+        ],
+        "body": [
+            "echo'<pre>';",
+            "print_r($0);",
+            "echo'</pre>';"
+        ],
+        "description": "pre and print_r"
+    },
+    "Var_dump Block": {
+        "prefix": [
+            "dump"
+        ],
+        "body": [
+            "echo\"<pre>\";",
+            "\t\tvar_dump($0);",
+            "echo'</pre>';"
+        ],
+        "description": "pre and var_dump"
+    },
+    "Debug Deal": {
+        "prefix": [
+            "debug"
+        ],
+        "body": [
+            "if($$debug){",
+            "$1,",
+            "}"
+        ],
+        "description": "debug wrapper"
+    },
+    "Switch Statement": {
+        "prefix": [
+            "ss"
+        ],
+        "body": [
+            "switch ($1) {",
+            "case '$2':",
+            "\techo 'Your favorite color is red!';",
+            "\tbreak;",
+            "case '$3':",
+            "\techo 'Your favorite color is blue!';",
+            "\tbreak;",
+            "default:",
+            "\techo 'Your favorite color is neither red, blue, nor green!';",
+            "}"
+        ],
+        "description": "switch statement"
+    },
+    "Insert": {
+        "prefix": [
+            "insert"
+        ],
+        "body": [
+            "$$query = 'INSERT INTO `Contacts` (`email`) VALUES (?)';",
+            "",
+            "if (false === ($$stmt = $$conn->prepare($$query))) {",
+            "\techo 'error preparing statement: ' . $$conn->error;",
+            "} elseif (!$$stmt->bind_param('si', $$var1_string, $$var2_int)) {",
+            "\techo 'error binding params: ' . $$stmt->error;",
+            "} elseif (!$$stmt->execute()) {",
+            "\techo 'error executing statement: ' . $$stmt->error;",
+            "}"
+        ],
+        "description": "insert"
+    },
+    "Update": {
+        "prefix": [
+            "update"
+        ],
+        "body": [
+            "$$sql = 'UPDATE everflow_subscriptions SET timestamp_sent_to_everflow = ? WHERE everflow_subscriptions.Id = ?';",
+            "",
+            "if (false === ($$stmt = $$conn->prepare($$query))) {",
+            "\techo 'error preparing statement: ' . $$conn->error;",
+            "} elseif (!$$stmt->bind_param('si', $$var1_string, $$var2_int)) {",
+            "\techo 'error binding params: ' . $$stmt->error;",
+            "} elseif (!$$stmt->execute()) {",
+            "\techo 'error executing statement: ' . $$stmt->error;",
+            "}"
+        ],
+        "description": "update"
+    },
+    "Select": {
+        "prefix": [
+            "select"
+        ],
+        "body": [
+            "$$sql = 'SELECT * FROM `everflow_subscriptions` WHERE `timestamp_sent_to_everflow` IS NULL ORDER BY `Id` DESC';",
+            "$$result = $conn->query($$sql);",
+            "",
+            "if ($$result->num_rows > 0) {",
+            "\twhile($$row = $$result->fetch_assoc()) {",
+            "",
+            "\t\tif($$debug){",
+            "\t\t\techo'<pre>';",
+            "\t\t\tvar_dump($$row);",
+            "\t\t\techo'</pre>';",
+            "\t\t}",
+            "",
+            "\t}",
+            "}",
+            "else {",
+            "\techo '0 results';",
+            "}"
+        ],
+        "description": "select"
+    },
+    "url_comment": {
+        "prefix": [
+            "url_comment"
+        ],
+        "body": [
+            "/*",
+            "use the link below to load this file in your browser",
+            "$0?v=1 ",
+            "*/",
+            "",
+            "$$debug = 1;"
+        ],
+        "description": "url_comment"
+    },
+    "error_log": {
+        "prefix": [
+            "error_log"
+        ],
+        "body": [
+            "ini_set('display_errors', 1);",
+            "ini_set('display_startup_errors', 1);",
+            "error_reporting(E_ALL);"
+        ],
+        "description": "error_log"
+    },
+    "log": {
+        "prefix": [
+            "log_guw"
+        ],
+        "body": [
+            "$$message=\"list send \\n\";",
+            "foreach ($$_REQUEST as $$key=>$$value) {",
+            "\t$$message.= $$key.\": \".$$value.\"\\n\";",
+            "}",
+            "wh_log($$message);",
+            "",
+            "function wh_log($$log_msg){",
+            "\tif($$debug){",
+            "\t\techo\"log file function\";",
+            "\t}",
+            "\t$$log_filename = \"log\";",
+            "\tif (!file_exists($$log_filename)) {",
+            "\t\tmkdir($$log_filename, 0777, true);",
+            "\t}",
+            "\t$$log_file_data = $$log_filename.'/log_' . date('Y-m-d') . '.log';",
+            "\tfile_put_contents($$log_file_data, $$log_msg . \"\\n\", FILE_APPEND);",
+            "}"
+        ],
+        "description": "log"
+    },
+    "while_IS": {
+        "prefix": [
+            "while_IS"
+        ],
+        "body": [
+            "$$page = 0;",
+            "$$returnFields = array('Id','ActionDescription','CreationDate');",
+            "$$query = array('ActionDescription' => 'End RAA Webinar Campaign');",
+            "",
+            "while ($$result = $$app->dsQuery('ContactAction',500,$$page,$$query,$$returnFields)) {",
+            "",
+            "\t$$page++;",
+            "",
+            "\tforeach($$result as $$data){",
+            "",
+            "\t\t// echo \"<pre>\";",
+            "\t\t// print_r($$data);",
+            "\t\t// echo $$data[\"Id\"].\"<br>\";",
+            "\t\t$$result = $$app->dsDelete('ContactAction',$$data[\"Id\"]);",
+            "",
+            "\t\t// echo \"<pre>\";",
+            "\t\t// print_r($$result);",
+            "\t\t// echo \"</pre>\";",
+            "",
+            "\t}",
+            "",
+            "}"
+        ],
+        "description": "while_IS"
+    },
+    "function": {
+        "prefix": [
+            "function"
+        ],
+        "body": [
+            "function $1(){",
+            "\techo \"Example function\";",
+            "\treturn $$retval;",
+            "}"
+        ],
+        "description": "function"
+    },
+    "expand": {
+        "prefix": [
+            "summary, expand"
+        ],
+        "body": [
+            "echo\"<details>",
+            "<summary>$1",
+            "</summary><pre>\";",
+            "var_dump($2);",
+            "echo\"</pre></details>\";"
+        ],
+        "description": "expand"
+    },
+}

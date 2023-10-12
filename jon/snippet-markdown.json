@@ -1,0 +1,86 @@
+{
+    // Place your snippets for markdown here. Each snippet is defined under a snippet name and has a prefix, body and 
+    // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+    // same ids are connected.
+    // Example:
+    // "Print to console": {
+    // 	"prefix": "log",
+    // 	"body": [
+    // 		"console.log('$1');",
+    // 		"$2"
+    // 	],
+    // 	"description": "Log output to console"
+    // }
+    "Morning checklist": {
+        "prefix": "morning",
+        "body": [
+            "time tracking",
+            "email",
+            "desktop & task cleanup",
+            "P&E",
+            "contact",
+            "look ahead"
+        ],
+        "description": "Morning checklist"
+    },
+    "G: ": {
+        "prefix": "G:, g, good",
+        "body": [
+            "G: ",
+            "B: "
+        ],
+        "description": "For good and bad notes"
+    },
+    "Comment: ": {
+        "prefix": "comment:",
+        "body": [
+            "**Status**: $1On Track",
+            "$2",
+            "**Progress**: $3%",
+            "$4",
+            "**Next Steps**:",
+            "$5",
+            "**Issues**:",
+            "$6",
+            "**Roadblock**:",
+            "$7"
+        ],
+        "description": "Comments"
+    },
+    "Team ": {
+        "prefix": "Team",
+        "body": [
+            "Beth - ",
+            "Nathan - ",
+            "Ethan - ",
+            "Amanda - ",
+            "Garrett - ",
+            "Jon - ",
+            "",
+            "Desiree - ",
+            "Evan - ",
+            "Chris - ",
+            "Jordan - ",
+            "Niko - ",
+            "",
+            "Chip - ",
+            "Heather - ",
+            "Thomas - ",
+            "Cody B - ",
+            "",
+            "Kate - ",
+            "Michael - ",
+            "Mike - ",
+            "Alicia - ",
+            "",
+            "Jimmy - ",
+            "Keith - ",
+            "Bryan - ",
+            "Bobby - ",
+            "Jake - n/a",
+            "Goose - "
+        ],
+        "description": "Team"
+    }
+}
