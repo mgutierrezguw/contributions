@@ -1,0 +1,568 @@
+/***********/
+/* GENERAL */
+/***********/
+
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
+
+body, html {
+    font-family: 'Silkscreen', cursive;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+/**********************/
+/* ROOM, CAMERA & HUD */
+/**********************/
+
+.room {
+    display: block;
+    background-color: black;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.room .camera {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    transform: translate(0, 0);
+}
+
+.hud {
+    display: flex;
+    position: fixed;
+    top: 25px;
+    left: 25px;
+    width: calc(100% - 50px);
+    height: calc(100% - 50px);
+    color: white;
+}
+
+
+
+/****************/
+/* START SCREEN */
+/****************/
+
+.start-screen-wrap {
+    margin-top: auto;
+    margin-bottom: auto;
+    display: block;
+    text-align: center;
+    height: fit-content;
+    width: 100%;
+}
+
+#start-screen #title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#start-screen #sub-title {
+    width: 70%;
+    min-width: 250px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#start-screen #sub-title-2 {
+    width: 70%;
+    min-width: 250px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#start-screen #press-start {
+    margin-top: 5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    font-weight: 700;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+    border-image: linear-gradient(to right, #ef5350, #f48fb1, #7e57c2, #2196f3, #26c6da, #43a047, #eeff41, #f9a825, #ff5722) 1;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+/***************/
+/* GAME SCREEN */
+/***************/
+
+.game-screen-wrap {
+    margin-top: auto;
+    margin-bottom: auto;
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+#game-screen #coin-counter-label {
+    margin-bottom: 1rem;
+    margin-top: 0rem;
+}
+
+#game-screen #coin-counter {
+    display: inline;
+    position: absolute;
+    top: 0px;
+    margin-top: 0px;
+    left: 9.5rem;
+}
+
+#game-screen #quit-label {
+    margin-bottom: 0px;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    text-align: right;
+}
+
+
+
+/***********/
+/* OBJECTS */
+/***********/
+
+.object {
+    position: fixed;
+    display: block;
+    width: fit-content;
+    height: fit-content;
+    z-index: 0;
+    transform: rotate(0deg);
+}
+
+
+
+/************/
+/* PLAYER 1 */
+/************/
+
+#player-1 {
+    width: 25px;
+    height: 53px;
+    padding-left: 8px;
+}
+
+#player-1 .part:first-child {
+    border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
+    width: 25px;
+    height: 20px;
+    border: 1px solid white;
+    background-color: black;
+    border-bottom: 0px;
+    top: 0px;
+    left: 8px;
+    position: absolute;
+    z-index: 1;
+}
+
+#player-1 .part:nth-child(2) {
+    width: 25px;
+    height: 25px;
+    border: 1px solid white;
+    background-color: black;
+    border-top: 0px;
+    display: block;
+    position: absolute;
+    top: 20px;
+    left: 8px;
+    z-index: 1;
+}
+
+#player-1 .part:nth-child(3) {
+    border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
+    width: 41px;
+    height: 20px;
+    border: 1px solid white;
+    display: block;
+    position: absolute;
+    top: 24px;
+    left: 0px;
+    z-index: 0;
+}
+
+#player-1 .part:nth-child(4) {
+    border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
+    width: 21px;
+    height: 15px;
+    border: 1px solid white;
+    background-color: black;
+    top: 36px;
+    left: 10px;
+    position: absolute;
+    z-index: 0;
+}
+
+#player-1 .part:nth-child(5) {
+    width: 5px;
+    height: 12px;
+    border: 1px solid white;
+    background-color: black;
+    top: 18px;
+    left: 8px;
+    position: absolute;
+    z-index: 2;
+}
+
+#player-1 .part:nth-child(6) {
+    width: 6px;
+    height: 6px;
+    border: 1px solid white;
+    background-color: black;
+    top: 35px;
+    left: 27px;
+    position: absolute;
+    z-index: 2;
+}
+
+
+
+/*************/
+/* GHOST NPC */
+/*************/
+
+.object.ghost {
+    width: 27px;
+    height: 49px;
+}
+
+.object.ghost .part:first-child {
+    border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
+    width: 25px;
+    height: 20px;
+    border: 1px solid white;
+    background-color: black;
+    border-bottom: 0px;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    z-index: 1;
+}
+
+.object.ghost .part:nth-child(2) {
+    border-radius: 50% 50% 67% 67% / 0% 0% 10% 10%;
+    width: 25px;
+    height: 26px;
+    border: 1px solid white;
+    background-color: black;
+    border-top: 0px;
+    display: block;
+    position: absolute;
+    top: 20px;
+    left: 0px;
+    z-index: 1;
+}
+
+/* left eye */
+.object.ghost .part:nth-child(3) {
+    border-radius: 50% 50% 50% 50% / 10% 10% 10% 10% ;
+    width: 4px;
+    height: 8px;
+    border: 1px solid white;
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    z-index: 2;
+    animation-name: ghost-blink;
+    animation-duration: 10s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+/* right eye */
+.object.ghost .part:nth-child(4) {
+    border-radius: 50% 50% 50% 50% / 10% 10% 10% 10% ;
+    width: 4px;
+    height: 8px;
+    border: 1px solid white;
+    background-color: black;
+    top: 10px;
+    left: 15px;
+    position: absolute;
+    z-index: 2;
+    animation-name: ghost-blink;
+    animation-duration: 10s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+/* ghost tail 1 */
+.object.ghost .part:nth-child(5) {
+    border-radius: 100% 0% 50% 50% / 0% 0% 100% 100%;
+    width: 9px;
+    height: 8px;
+    border: 1px solid white;
+    background-color: black;
+    border-top: 0px;
+    top: 40px;
+    left: 0px;
+    position: absolute;
+    z-index: 2;
+    animation-name: ghost-tail;
+    animation-duration: 1s;
+    animation-delay: -1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+/* ghost tail 2 */
+.object.ghost .part:nth-child(6) {
+    border-radius: 100% 0% 50% 50% / 0% 0% 100% 100%;
+    width: 9px;
+    height: 8px;
+    border: 1px solid white;
+    background-color: black;
+    border-top: 0px;
+    top: 40px;
+    left: 8px;
+    position: absolute;
+    z-index: 2;
+    animation-name: ghost-tail;
+    animation-duration: 1s;
+    animation-delay: -0.66s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+/* ghost tail 3 */
+.object.ghost .part:nth-child(7) {
+    border-radius: 100% 0% 50% 50% / 0% 0% 100% 100%;
+    width: 9px;
+    height: 8px;
+    border: 1px solid white;
+    background-color: black;
+    border-top: 0px;
+    top: 40px;
+    left: 16px;
+    position: absolute;
+    z-index: 2;
+    animation-name: ghost-tail;
+    animation-duration: 1s;
+    animation-delay: -0.33s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+/* ghost tail cover */
+.object.ghost .part:nth-child(8) {
+    border-radius: 50% 50% 100% 100% / 0% 0% 50% 50%;
+    width: 25px;
+    height: 10px;
+    border: 0px;
+    background-color: black;
+    top: 35px;
+    left: 1px;
+    position: absolute;
+    z-index: 3;
+}
+
+/* ghost tail 4 */
+.object.ghost .part:nth-child(9) {
+    border-radius: 100% 0% 50% 50% / 0% 0% 100% 100%;
+    width: 9px;
+    height: 8px;
+    border: 1px solid white;
+    background-color: black;
+    border-top: 0px;
+    top: 40px;
+    left: 16px;
+    position: absolute;
+    z-index: 1;
+}
+
+/* ghost tail 5 */
+.object.ghost .part:nth-child(10) {
+    border-radius: 100% 0% 50% 50% / 0% 0% 100% 100%;
+    width: 9px;
+    height: 8px;
+    border: 1px solid white;
+    background-color: black;
+    border-top: 0px;
+    top: 40px;
+    left: 0px;
+    position: absolute;
+    z-index: 1;
+}
+
+
+
+/*********/
+/* COINS */
+/*********/
+
+.object.coin {
+    width: 27px;
+    height: 37px;
+}
+
+.object.coin .part:first-child {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50% ;
+    width: 25px;
+    height: 35px;
+    border: 1px solid white;
+    background-color: black;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    z-index: 1;
+    animation-name: coin-spin;
+    animation-duration: 2s;
+    animation-delay: 0s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.object.coin .part:nth-child(2) {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50% ;
+    width: 25px;
+    height: 35px;
+    border: 1px solid white;
+    background-color: black;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    z-index: 1;
+    animation-name: coin-spin-inner;
+    animation-duration: 4s;
+    animation-delay: 0s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.object.coin .part:nth-child(3) {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50% ;
+    width: 5px;
+    height: 15px;
+    border: 1px solid white;
+    background-color: black;
+    top: 10px;
+    left: 10px;
+    position: absolute;
+    z-index: 1;
+    animation-name: coin-spin;
+    animation-duration: 2s;
+    animation-delay: 0s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.object.coin .part:nth-child(4) {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50% ;
+    width: 3px;
+    height: 15px;
+    border: 1px solid white;
+    background-color: black;
+    top: 10px;
+    left: 10px;
+    position: absolute;
+    z-index: 1;
+    animation-name: coin-spin-inner-inner;
+    animation-duration: 4s;
+    animation-delay: 0s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+
+
+/************************/
+/* ANIMATIONS & EFFECTS */
+/************************/
+
+.rainbow-horizontal {
+    background: linear-gradient(to right, #ef5350, #f48fb1, #7e57c2, #2196f3, #26c6da, #43a047, #eeff41, #f9a825, #ff5722);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation-name: rainbow-horizontal-scroll;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    width: 100vw;
+}
+
+.float-vertical {
+    animation-name: float-vertical;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.rainbow-horizontal.slow {
+    animation-duration: 4s;
+}
+
+.rainbow-horizontal.fast {
+    animation-duration: 0.75s;
+}
+
+@keyframes rainbow-horizontal-scroll {
+    from { background-position-x: 0vw; }
+    to { background-position-x: 100vw; }
+}
+
+@keyframes float-vertical {
+    0% { transform: translateY(-5px); }
+    50% { transform: translateY(5px); }
+    100% { transform: translateY(-5px); }
+}
+
+@keyframes ghost-tail {
+    0% { left: 0px; }
+    100% { left: 16px; }
+}
+
+@keyframes coin-spin-inner {
+    0% { transform: scaleX(1); }
+    24.999% { transform: scaleX(0.1); }
+    25% { transform: scaleX(-0.1); }
+    50% { transform: scaleX(-1); }
+    74.999% { transform: scaleX(-0.1); }
+    75% { transform: scaleX(0.1); }
+    100% { transform: scaleX(1); }
+}
+
+@keyframes coin-spin-inner-inner {
+    0% { transform: scaleX(1); margin-left: 2px; }
+    24.999% { transform: scaleX(0.7); margin-left: 1px; }
+    25% { transform: scaleX(-0.7); margin-left: 1px; }
+    50% { transform: scaleX(-1); margin-left: 0px; }
+    74.999% { transform: scaleX(0.7); margin-left: 1px; }
+    75% { transform: scaleX(-0.7); margin-left: 1px; }
+    100% { transform: scaleX(1); margin-left: 2px; }
+}
+
+@keyframes coin-spin {
+    0% { transform: scaleX(1); }
+    50% { transform: scaleX(0); }
+    100% { transform: scaleX(1); }
+}
+
+@keyframes ghost-blink {
+    0% { height: 8px; }
+    24% { height: 8px; }
+    25% { height: 0px; }
+    26% { height: 8px; }
+    74% { height: 8px; }
+    75% { height: 0px; }
+    76% { height: 8px; }
+    77% { height: 0px; }
+    78% { height: 8px; }
+    100% { height: 8px; }
+}
