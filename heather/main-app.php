@@ -5,152 +5,120 @@ include('active-api.php');
 
 
 
-/* Main App Logic */
-
-/* Note: This is the file which imports contacts directly into ActiveCampaign. */
-
-//https://gstaging.getuwired.us/engconcepts/heather/TLYCS/next-steps-tlycs/main-app.php
-
-// Get a list of contacts from Salesforce from updated within the last 24 hours
-
-// /*
-//  by Date Parameters
-// */
+//When an Opp is created or updated in Salesforce, the script is hit by a webhook and flow in Salesforce.
+//Inside SF, under Setup -> Process Automation -> Workflow Actions -> Outbound Messages, we will determine what data is sent ot the webhook
+//Inside SF, we'll build a Flow that handles the passing of that data to the script on our server.
+//Are there any conditions on what Opportunities should get passed to the script?
 
 
-$dt = new DateTime("now");
-$today = $dt->format("Y-m-d");
-$end = $today . "T23:00:00Z";
-
-
-$date = new DateTime();
-$date->sub(new DateInterval('P1D'));
-$yesterday = $date->format('Y-m-d');
-$start = $yesterday . "T00:00:00Z";
+//When the data comes through to this script, it will be a single Opportunity's informaton.
+$xml = file_get_contents("php://input");
 
 
 
-echo "get updated contacts in Salesforce: ";
-$sc_contact_id_array = get_sf_updated_contacts($start, $end);
+$xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", '$1$2$3', $xml);
+$xml = simplexml_load_string($xml);
+$json = json_encode($xml);
+$responseArray = json_decode($json, true); // true to have an array, false for an object
 
 
-d_log('Finding contacts from Salesforce API call updated in last 24 hours.</pre>');
+$fd = @fopen("webhook.txt", "a");
+
+// fwrite($fd, "Response from Salesforce: \n\n");
+// ob_start();
+// var_dump($responseArray);
+
+// $data = ob_get_clean();
+// fwrite($fd, $data);
+
+// fclose($fd);
+
+//single opportunity
+$singleOppArray = $singleOppArray = $responseArray['soapenvBody']['notifications']['Notification']['sObject'];
 
 
-foreach ($sc_contact_id_array as $key => $contact_id) {
-	
-	// echo "New Contact: " . $contact_id . "<br>";
-	
-	//find contact's email address
-	$individual_contact_info = sf_get_contact($contact_id);
-
-	$individual_email = $individual_contact_info->Email;
-
-	$ac_contact = find_activecampaign_contact_by_email($individual_email);
-
-	//if a contact is not in ActiveCampaign, create one; get the Contact Id in ActiveCampaign
-	if($ac_contact == false) {
-
-		$data = [
-			'contact'=> [
-				'email' => $individual_email, 
-				'firstName' => $individual_contact_info->FirstName, 
-				'lastName' => $individual_contact_info->LastName
-			]
-		];
-
-		$json_data = json_encode($data);
-
-		$ac_contact_id = create_ac_contact($json_data);
-
-	} else {
-
-		$ac_contact_id = $ac_contact->id;
-	}
-
-	echo "AC Contact Id: " . $ac_contact_id . "<br>";
-
-	//find opportunities on that Salesforce contact
-	$opportunities = get_sf_opportunities_on_contact($contact_id);
-	$opportunity_array = $opportunities->records;
-
-	foreach ($opportunity_array as $key => $val) {
-
-		$opp_last_modified = substr($val->LastModifiedDate, 0, 10);
-		$opp_created = substr($val->CreatedDate, 0, 10);
-		
-		//create a unique external id for each donation opportunity so that it could be updated if it is already in there
-		$sf_opp_id = "salesforce-opp-id-" . $val->Id;
-		// echo "External ID: " . $val->Id;
-
-		echo "<pre>";
-		echo "Opportunity: <br>";
-		print_r($val);
-
-		echo "</pre>";
+$singleOppId = $singleOppArray['sfId'];
+$opp_last_modified = substr($singleOppArray['sfLastModifiedDate'], 0, 10);
+$opp_created = substr($singleOppArray['sfCreatedDate'], 0, 10);
 
 
-		//get allocations on that contact
-		$returned_allocations = get_sf_allocations_on_contact($val->Id);
-		$allocations_on_opportunity = $returned_allocations->records;
 
-		// echo "<pre>";
-		// echo "Allocations on Opportunity: <br>";
-		// print_r($allocations_on_opportunity);
+// Get allocations on that opportunity
+$returned_allocations = get_sf_allocations_on_contact($singleOppId);
+$allocations_on_opportunity = $returned_allocations->records;
 
-		// echo "</pre>";
+// Using the email address on the Contact in SF, we will check to see if the same contact exists in AC
+// If the contact does not exist in AC, we create one. If the contact does exist, we update it.
+$contact_id = $singleOppArray['sfContactId'];
 
-		//create a new array to push new allocations into the contact in ActiveCampaign
-		$new_allocations = [];
 
-		foreach($allocations_on_opportunity as $allocation_info => $allocation_value) {			
+//find contact's email address
+$individual_contact_info = sf_get_contact($contact_id);
 
-			$allocation_last_modified = substr($allocation_value->LastModifiedDate, 0, 10);
 
-			//finding allocations that were modified or created in the last two days
-			if($allocation_last_modified == $today || $allocation_last_modified == $yesterday) {
+$individual_email = $individual_contact_info->Email;
 
-				array_push($new_allocations, $allocation_value);
-			}
-		}
-		
-		$charity_name = $val->Campaign__c;
-		
-		$latest_charity = [
-			"fieldValue" => [
-				"contact" => $ac_contact_id,
-				"field" => 54,
-				"value" => $charity_name
-			]
-		];
+$ac_contact = find_activecampaign_contact_by_email($individual_email);
 
-		
-		// If the opportunity was last modified today or yesterday, add to ActiveCampaign
-		if($opp_last_modified != $yesterday && $opp_last_modified != $today ) {
+//if a contact is not in ActiveCampaign, create one; get the Contact Id in ActiveCampaign
+if($ac_contact == false) {
 
-			continue;
+	$data_ac_contact = [
+		'contact'=> [
+			'email' => $individual_email, 
+			'firstName' => $individual_contact_info->FirstName, 
+			'lastName' => $individual_contact_info->LastName
+		]
+	];
 
-		} else {
+	$json_data_ac_contact = json_encode($data_ac_contact);
 
-			//add a Donation custom object in activecampaign 
-			$result = add_ac_donation($val, $new_allocations, $ac_contact_id);
+	$ac_contact_id = create_ac_contact($json_data_ac_contact);
 
-			//update the latest charity fields
-			update_custom_field_on_contact($latest_charity);
-			continue;
-		}
-		
-	} // End of Opportunity Loop
+} else {
 
-	// echo "status: " . $individual_contact_info->HasOptedOutOfEmail . "<br>";
+	$ac_contact_id = $ac_contact->id;
+}
+
+
+//NEED TO FIGURE OUT LOGIC - CHECK TO SEE WHAT IS ALREADY IN THERE BECAUSE OPPS ARE GOING TO BE TRIGGERING NUMEROUS TIMES IN ONE DAY
+
+$all_charities_last_day = [];
+
+// This sets the Latest Charity field in AC
+if($singleOppArray['sfCampaign_Friendly_Name__c'] == '') {
+	$charity_name = $singleOppArray['sfCampaign__c'];
+} else {
+	$charity_name = $singleOppArray['sfCampaign_Friendly_Name__c'];
+}
+
+array_push($all_charities_last_day, $charity_name);
+
+$charity_names = implode(", ", $all_charities_last_day);
+
+$latest_charity = [
+	"fieldValue" => [
+		"contact" => $ac_contact_id,
+		"field" => 54,
+		"value" => $charity_names
+	]
+];
+
+
+//update the latest charity fields
+echo "<br> This is before the charity field update: <br>";
+update_custom_field_on_contact($latest_charity);
+
+//add a Donation custom object in activecampaign 
+$result = add_ac_donation($singleOppArray, $allocations_on_opportunity, $ac_contact_id);
+
+
 
 	if($individual_contact_info->HasOptedOutOfEmail == 1) {
 		$email_opt_out = 'true';
 	} else {
-		$email_opt_out = '';
+		$email_opt_out = 'false';
 	}
-// echo "email status: " . $email_opt_out . "<br>";
-
 
 	$email_opt_out_status = [
 		"fieldValue" => [
@@ -175,8 +143,4 @@ foreach ($sc_contact_id_array as $key => $contact_id) {
 	update_custom_field_on_contact($update_contact_owner_name);
 
 
-}	// End of Contact Loop
-
-
-?>
 
